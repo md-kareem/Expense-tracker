@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Expense Tracker{% endblock %}
+
+{% block content %}
+
+<div class="auth-card">
+
+    <h1>Welcome Back</h1>
+
+    <p class="muted">
+        Login to manage your expenses.
+    </p>
+
+    <form method="POST">
+
+        <label>Username</label>
+
+        <input
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            required
+        >
+
+        <label>Password</label>
+
+        <input
+            type="password"
+            name="password"
+            placeholder="Enter password"
+            required
+        >
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <p class="auth-link">
+        Don't have an account?
+        <a href="{{ url_for('register') }}">
+            Register
+        </a>
+    </p>
+
+</div>
+
+{% endblock %}

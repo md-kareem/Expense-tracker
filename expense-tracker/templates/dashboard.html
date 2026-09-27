@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Expense Tracker{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Dashboard</h1>
+
+        <p class="muted">
+            Welcome, {{ session.get("username") }}!
+        </p>
+    </div>
+
+    <a
+        href="{{ url_for('add_expense') }}"
+        class="button"
+    >
+        + Add Expense
+    </a>
+
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <h3>Total Spending</h3>
+
+        <p class="stat-value">
+            ₹{{ "%.2f"|format(total_spending) }}
+        </p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h3>This Month</h3>
+
+        <p class="stat-value">
+            ₹{{ "%.2f"|format(monthly_spending) }}
+        </p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h3>Total Expenses</h3>
+
+        <p class="stat-value">
+            {{ expense_count }}
+        </p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h3>Monthly Budget</h3>
+
+        <p class="stat-value">
+            ₹{{ "%.2f"|format(budget_amount) }}
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="dashboard-grid">
+
+    <div class="card">
+
+        <h2>Budget Progress</h2>
+
+        {% if budget_amount > 0 %}
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    style="width: {{ budget_percentage }}%;"
+                ></div>
+
+            </div>
+
+            <p class="muted">
+                ₹{{ "%.2f"|format(monthly_spending) }}
+                of
+                ₹{{ "%.2f"|format(budget_amount) }}
+                used
+            </p>
+
+            <p>
+                {{ "%.1f"|format(budget_percentage) }}% used
+            </p>
+
+        {% else %}
+
+            <p class="muted">
+                No budget set for this month.
+            </p>
+
+            <a href="{{ url_for('budget') }}">
+                Set Monthly Budget
+            </a>
+
+        {% endif %}
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Category Summary</h2>
+
+        {% if category_summary %}
+
+            <div class="category-list">
+
+                {% for category in category_summary %}
+
+                    <div class="category-row">
+
+                        <span>
+                            {{ category["category"] }}
+                        </span>
+
+                        <strong>
+                            ₹{{ "%.2f"|format(category["total"]) }}
+                        </strong>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="muted">
+                No expenses added yet.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<div class="card">
+
+    <div class="section-header">
+
+        <h2>Recent Expenses</h2>
+
+        <a href="{{ url_for('expenses') }}">
+            View All
+        </a>
+
+    </div>
+
+
+    {% if recent_expenses %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Category</th>
+
+                        <th>Description</th>
+
+                        <th>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for expense in recent_expenses %}
+
+                        <tr>
+
+                            <td>
+                                {{ expense["expense_date"] }}
+                            </td>
+
+                            <td>
+                                {{ expense["category"] }}
+                            </td>
+
+                            <td>
+                                {{ expense["description"] }}
+                            </td>
+
+                            <td>
+                                ₹{{ "%.2f"|format(expense["amount"]) }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <p class="muted">
+            No expenses available.
+        </p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

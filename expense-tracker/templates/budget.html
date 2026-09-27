@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Budget - Expense Tracker{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+
+        <h1>Monthly Budget</h1>
+
+        <p class="muted">
+            Set and manage your spending limit.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div class="card form-card">
+
+    <h2>Set Budget</h2>
+
+    <p class="muted">
+        Set the maximum amount you want to spend this month.
+    </p>
+
+
+    <form method="POST">
+
+        <div class="form-group">
+
+            <label for="amount">
+                Monthly Budget Amount
+            </label>
+
+            <input
+                type="number"
+                id="amount"
+                name="amount"
+                step="0.01"
+                min="0"
+                value="{{ budget_amount }}"
+                placeholder="Enter budget amount"
+                required
+            >
+
+        </div>
+
+
+        <button type="submit">
+            Save Budget
+        </button>
+
+    </form>
+
+</div>
+
+
+<div class="card">
+
+    <h2>Current Month</h2>
+
+    <div class="budget-info">
+
+        <div>
+
+            <span class="muted">
+                Budget
+            </span>
+
+            <strong>
+                ₹{{ "%.2f"|format(budget_amount) }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span class="muted">
+                Spent
+            </span>
+
+            <strong>
+                ₹{{ "%.2f"|format(monthly_spending) }}
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span class="muted">
+                Remaining
+            </span>
+
+            <strong>
+                ₹{{ "%.2f"|format(remaining_budget) }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    {% if budget_amount > 0 %}
+
+        <div class="progress-bar">
+
+            <div
+                class="progress-fill"
+                style="width: {{ budget_percentage }}%;"
+            ></div>
+
+        </div>
+
+        <p class="muted">
+            {{ "%.1f"|format(budget_percentage) }}% of your
+            monthly budget has been used.
+        </p>
+
+    {% else %}
+
+        <p class="muted">
+            Set a budget to track your monthly spending.
+        </p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
